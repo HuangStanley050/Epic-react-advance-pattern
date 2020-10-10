@@ -79,7 +79,7 @@ function useUser() {
 function updateUser(dispatch, user, updates) {
   dispatch({type: 'start update', updates})
   userClient
-    .updateUser(user, {updates})
+    .updateUser(user, updates)
     .then(
       updatedUser => dispatch({type: 'finish update', updatedUser}),
       error => dispatch({type: 'fail update', error}),
