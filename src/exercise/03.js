@@ -39,17 +39,20 @@ const useToggle = () => {
   return context
 }
 
-function ToggleOn({on, children}) {
+function ToggleOn({children}) {
+  const {on, toggle} = useToggle()
   return on ? children : null
 }
 
 // 🐨 do the same thing to this that you did to the ToggleOn component
-function ToggleOff({on, children}) {
+function ToggleOff({children}) {
+  const {on, toggle} = useToggle()
   return on ? null : children
 }
 
 // 🐨 get `on` and `toggle` from the ToggleContext with `useContext`
-function ToggleButton({on, toggle, ...props}) {
+function ToggleButton({...props}) {
+  const {on, toggle} = useToggle()
   return <Switch on={on} onClick={toggle} {...props} />
 }
 
