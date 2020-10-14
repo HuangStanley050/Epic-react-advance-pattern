@@ -6,18 +6,22 @@ import {Switch} from '../switch'
 
 // 🐨 create your ToggleContext context here
 // 📜 https://reactjs.org/docs/context.html#reactcreatecontext
+const ToggleContext = React.createContext()
+ToggleContext.displayName = 'ToggleContext'
+
+// const ToggleProvider = ({children}) => {
+//   return <ToggleContext.Provider>{children}</ToggleContext.Provider>
+// }
 
 function Toggle({onToggle, children}) {
   const [on, setOn] = React.useState(false)
   const toggle = () => setOn(!on)
-
+  const value = {on, toggle}
   // 🐨 remove all this 💣 and instead return <ToggleContext.Provider> where
   // the value is an object that has `on` and `toggle` on it.
-  return React.Children.map(children, child => {
-    return typeof child.type === 'string'
-      ? child
-      : React.cloneElement(child, {on, toggle})
-  })
+  return (
+    <ToggleContext.Provider value={value}>{children}</ToggleContext.Provider>
+  )
 }
 
 // 🐨 we'll still get the children from props (as it's passed to us by the
@@ -27,6 +31,14 @@ function Toggle({onToggle, children}) {
 // your context won't be exposed to the user
 // 💰 `const context = useContext(ToggleContext)`
 // 📜 https://reactjs.org/docs/hooks-reference.html#usecontext
+const useToggle = () => {
+  const context = React.useContext(ToggleContext)
+  if (!context) {
+    throw new Error('useCount must be used within a CountProvider')
+  }
+  return context
+}
+
 function ToggleOn({on, children}) {
   return on ? children : null
 }
