@@ -40,13 +40,13 @@ const useToggle = () => {
 }
 
 function ToggleOn({children}) {
-  const {on, toggle} = useToggle()
+  const {on} = useToggle()
   return on ? children : null
 }
 
 // 🐨 do the same thing to this that you did to the ToggleOn component
 function ToggleOff({children}) {
-  const {on, toggle} = useToggle()
+  const {on} = useToggle()
   return on ? null : children
 }
 
