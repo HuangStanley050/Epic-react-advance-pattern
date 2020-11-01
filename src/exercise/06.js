@@ -40,7 +40,7 @@ function useToggle({
   // 🐨 determined whether on is controlled and assign that to `onIsControlled`
   // 💰 `controlledOn != null`
   if (controlledOn != null) {
-    onIsControlled = controlledOn
+    onIsControlled = true
   }
 
   // 🐨 Replace the next line with assigning `on` to `controlledOn` if
@@ -55,6 +55,12 @@ function useToggle({
   // 1. accept an action
   // 2. if onIsControlled is false, call dispatch with that action
   // 3. Then call `onChange` with our "suggested changes" and the action.
+  const dispatchWithOnChange = action => {
+    if (!onIsControlled) {
+      dispatch(action)
+    }
+    onChange?.(reducer({...state, on}, action), action)
+  }
 
   // 🦉 "Suggested changes" refers to: the changes we would make if we were
   // managing the state ourselves. This is similar to how a controlled <input />
@@ -72,8 +78,9 @@ function useToggle({
   // so keep that in mind when you call it! How could you avoid calling it if it's not passed?
 
   // make these call `dispatchWithOnChange` instead
-  const toggle = () => dispatch({type: actionTypes.toggle})
-  const reset = () => dispatch({type: actionTypes.reset, initialState})
+  const toggle = () => dispatchWithOnChange({type: actionTypes.toggle})
+  const reset = () =>
+    dispatchWithOnChange({type: actionTypes.reset, initialState})
 
   function getTogglerProps({onClick, ...props} = {}) {
     return {
